@@ -8,7 +8,7 @@ from PIL import Image
 import torchvision.transforms as transforms
 
 
-@functools.lru_cache(1)
+@functools.lru_cache(2)
 def getImgPaths(dataset_folder, train_bool):
     if train_bool:
         trn_or_test = 'train'
