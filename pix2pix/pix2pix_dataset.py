@@ -41,6 +41,7 @@ class pix2pix_dataset(Dataset):
         """
         self.img_paths = getImgPaths(dataset_folder, train_bool)
         self.len = len(self.img_paths)
+        print(Image.open(self.img_paths[0]).size)
         self.width, self.height = Image.open(self.img_paths[0]).size
         self.half_width = self.width // 2
         self.jitter = jitter
@@ -68,7 +69,7 @@ def transform(img, normalize=True, jitter=True, flip=True):
     """
     transform_list = []
     if jitter:
-        transform_list.append(transforms.Resize(286, Image.BICUBIC))
+        transform_list.append(transforms.Resize(286,  transforms.InterpolationMode.BICUBIC))
         transform_list.append(transforms.RandomCrop(256))
     if flip:
         transform_list.append(transforms.RandomHorizontalFlip())

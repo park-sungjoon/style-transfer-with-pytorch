@@ -46,7 +46,7 @@ class pix2pixTraining:
                             )
         parser.add_argument('--num-workers',
                             help='Number of worker process for background data loading',
-                            default=4,
+                            default=1,
                             type=int,
                             )
 
@@ -93,7 +93,7 @@ class pix2pixTraining:
         self.trn_dl = self.initTrainDl()
         self.val_dl = self.initValDl()
         for epoch in tqdm(range(1, self.cli_args.epochs + 1), desc='full training loop'):
-            self.doTraining(epoch)
+            self.doTraining()
             if epoch % 10 == 1 or epoch == self.cli_args.epochs:
                 self.visualize('val', epoch)
         if self.cli_args.save_model:
@@ -118,18 +118,18 @@ class pix2pixTraining:
         """ Initialize the validation dataloader"""
         pin_memory = True if self.use_cuda else False
         dataset = torch.utils.data.DataLoader(pix2pix_dataset(self.cli_args.data_folder,
-                                                              train_bool=True,
+                                                              train_bool=False,
                                                               jitter=self.cli_args.jitter,
                                                               flip=self.cli_args.flip,
                                                               ),
-                                              batch_size=self.cli_args.batch_size,
+                                              batch_size=8,
                                               shuffle=False,
                                               num_workers=self.cli_args.num_workers,
                                               pin_memory=pin_memory
                                               )
         return dataset
 
-    def doTraining(self, epoch):
+    def doTraining(self):
         """ Train for an epoch by looping over the training dataset """
         for data_x, data_y in tqdm(self.trn_dl, desc='current loop' + ' ' * 6, leave=False):
             data_x = data_x.to(self.device)
@@ -212,6 +212,9 @@ class pix2pixTraining:
 
             with torch.no_grad():
                 img_batch_G = self.generator(data_x)
+                data_x = (data_x+1.0)/2.0
+                data_y = (data_y+1.0)/2.0
+                img_batch_G = (img_batch_G+1.0)/2.0
                 torchvision.utils.save_image(data_x, os.path.join(file_path, 'x' + str(epoch) + '.png'))
                 torchvision.utils.save_image(img_batch_G, os.path.join(file_path, 'y_G' + str(epoch) + '.png'))
                 torchvision.utils.save_image(data_y, os.path.join(file_path, 'y' + str(epoch) + '.png'))

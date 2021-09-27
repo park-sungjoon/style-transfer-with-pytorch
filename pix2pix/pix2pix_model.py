@@ -46,7 +46,7 @@ class discriminator(nn.Module):
 
 class generator(nn.Module):
     def __init__(self, in_channels=3, out_channels=3):
-                """ Initiate the generator model in pix2pix. 
+        """ Initiate the generator model in pix2pix. 
         Args:
             in_channels (int): the number of channels in the input image. If the input is colored image, this is 3.
             out_channels (int): the number of channels in the output image. If the output is colored image, this is 3.
@@ -153,16 +153,16 @@ class ConvBlock(nn.Module):
 
 
 class ConvTransBlock(nn.Module):
-        """ The transpose convolution block in pix2pix
-        Args:
-            in_size (int): number of input features
-            out_size (int): number of output features
-            dropout (bool): use dropout if True.
-            kernel_size (int):  kernel size of convolutioon.
-            stride (int): stride size of convolution
-            padding (int): padding size of convolution
-            final (bool): set it to True for final transpose convolution layer.
-        """
+    """ The transpose convolution block in pix2pix
+    Args:
+        in_size (int): number of input features
+        out_size (int): number of output features
+        dropout (bool): use dropout if True.
+        kernel_size (int):  kernel size of convolutioon.
+        stride (int): stride size of convolution
+        padding (int): padding size of convolution
+        final (bool): set it to True for final transpose convolution layer.
+    """
     def __init__(self, in_size, out_size, dropout=False, kernel_size=4, stride=2, padding=1, final=False):
         super().__init__()
         ConvTransBlockList = nn.ModuleList()
