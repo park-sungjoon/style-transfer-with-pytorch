@@ -47,7 +47,7 @@ Below, we show the result of using blur&pool option (we weighed the pix_loss by 
 </p>
 
 As can be seen, this worsens image quality. 
-The most prominent feature is that the barcode-like artifacts becomes worse.
+The most prominent feature is that the barcode-like artifacts become worse (note that such artifacts are present with the original setting of cycleGAN as well).
 Such oscillatory behavior is reminicent of the [oscillatory behavior](https://arxiv.org/abs/1904.11486) of CNN classifiers that does not use anti-ailiasing in downsampling and upsampling layers.
 The identity loss (i.e. no downsampling) tries to preserve pixel at each position in space, so that oscillatory behavior is penalized.
 However, downsampling allows more freedom, and it could allowing the oscillatory behavior to become materialize more prominently.
