@@ -41,3 +41,17 @@ For training, we included the identity loss described in the cycleGAN paper
 Without this loss, we found that the generator can invert light and dark, most likely because pixel distribution is easy to learn.
 We implement this loss using the class down_sampler in cycleGAN_model.py.
 To allow more degree of freedom for the generator, one can turn on the blur&pool option.
+Below, we show the result of using blur&pool option (we weighed the pix_loss by a factor of 10 instead of 5 for this result)
+<p align="center">
+  <img src="cycleGAN/visualize/ani2photo/val/x_G200-downsampled-pixloss.png" width="800"\> <br>
+</p>
+
+As can be seen, this worsens image quality. 
+The most prominent feature is that the barcode-like artifacts becomes worse.
+Such oscillatory behavior is reminicent of the [oscillatory behavior](https://arxiv.org/abs/1904.11486) of CNN classifiers that does not use anti-ailiasing in downsampling and upsampling layers.
+The identity loss (i.e. no downsampling) tries to preserve pixel at each position in space, so that oscillatory behavior is penalized.
+However, downsampling allows more freedom, and it could allowing the oscillatory behavior to become materialize more prominently.
+
+## Things to do
+* Test whether anti-ailiasing will alleviate artifacts described above.
+* Try contrastive unpaired translation ([CUT](https://arxiv.org/abs/2007.15651))
